@@ -1,0 +1,42 @@
+makefile1: 
+src = $(wildcard *.c) взима всички файлове и ги прави .с
+obj = $(src:.c=.o) взима кода и го прави от .с в .о
+
+LDFLAGS = -lGL -lglut -lpng -lz -lm :--подаваме някакви флагове
+
+myprog: $(obj) взима обектите
+    $(CC) -o $@ $^ $(LDFLAGS)  компилира
+
+.PHONY: clean
+clean:
+    rm -f $(obj) myprog изчиства обектите
+-------------------------------------------------------------------------------
+Makefile #2:
+DIR =../include
+CC=gcc  компилатор
+CFLAGS=-I$(IDIR) допълнителни флагове за компилатор
+
+ODIR=obj
+LDIR =../lib добавяне на библиотеки
+
+LIBS=-lm
+
+_DEPS = hellomake.h
+DEPS = $(patsubst %,$(IDIR)/%,$(_DEPS))
+
+_OBJ = hellomake.o hellofunc.o 
+OBJ = $(patsubst %,$(ODIR)/%,$(_OBJ))
+
+
+$(ODIR)/%.o: %.c $(DEPS)
+	$(CC) -c -o $@ $< $(CFLAGS)
+
+hellomake: $(OBJ)
+	$(CC) -o $@ $^ $(CFLAGS) $(LIBS)
+
+.PHONY: clean
+
+clean:
+	rm -f $(ODIR)/*.o *~ core $(INCDIR)/*~
+
+
